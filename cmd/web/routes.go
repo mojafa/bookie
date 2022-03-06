@@ -22,5 +22,10 @@ func routes(app *config.AppConfig) http.Handler {
 	r.Use(middleware.Recoverer)
 	r.Get("/", handlers.Repo.Home)
 	r.Get("/about", handlers.Repo.About)
+
+	// enabling static files
+	fileServer := http.FileServer(http.Dir("./static/"))
+	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
 	return r
 }
